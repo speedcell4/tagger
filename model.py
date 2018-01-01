@@ -241,8 +241,7 @@ class Model(object):
             inputs.append(cap_layer.link(cap_ids))
 
         # Prepare final input
-        if len(inputs) != 1:
-            inputs = T.concatenate(inputs, axis=1)
+        inputs = T.concatenate(inputs, axis=1) if len(inputs) != 1 else inputs[0]
 
         #
         # Dropout on final input

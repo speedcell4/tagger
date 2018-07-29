@@ -1,5 +1,6 @@
 import theano
 import theano.tensor as T
+
 from utils import shared
 
 
@@ -9,6 +10,7 @@ class HiddenLayer(object):
     Input: tensor of dimension (dims*, input_dim)
     Output: tensor of dimension (dims*, output_dim)
     """
+
     def __init__(self, input_dim, output_dim, bias=True, activation='sigmoid',
                  name='hidden_layer'):
         self.input_dim = input_dim
@@ -91,6 +93,7 @@ class DropoutLayer(object):
     Dropout layer. Randomly set to 0 values of the input
     with probability p.
     """
+
     def __init__(self, p=0.5, name='dropout_layer'):
         """
         p has to be between 0 and 1 (1 excluded).
@@ -107,7 +110,7 @@ class DropoutLayer(object):
         Dropout link: we just apply mask to the input.
         """
         if self.p > 0:
-            mask = self.rng.binomial(n=1, p=1-self.p, size=input.shape,
+            mask = self.rng.binomial(n=1, p=1 - self.p, size=input.shape,
                                      dtype=theano.config.floatX)
             self.output = input * mask
         else:
@@ -126,6 +129,7 @@ class LSTM(object):
         Input: tensor3 of dimension (batch_size, sequence_length, input_dim)
         Output: matrix of dimension (batch_size, output_dim)
     """
+
     def __init__(self, input_dim, hidden_dim, with_batch=True, name='LSTM'):
         """
         Initialize neural network.
@@ -176,6 +180,7 @@ class LSTM(object):
         vector. The whole sequence is also accessible via self.h, but
         where self.h of shape (sequence_length, batch_size, output_dim)
         """
+
         def recurrence(x_t, c_tm1, h_tm1):
             i_t = T.nnet.sigmoid(T.dot(x_t, self.w_xi) +
                                  T.dot(h_tm1, self.w_hi) +
@@ -186,7 +191,7 @@ class LSTM(object):
             #                      T.dot(c_tm1, self.w_cf) +
             #                      self.b_f)
             c_t = ((1 - i_t) * c_tm1 + i_t * T.tanh(T.dot(x_t, self.w_xc) +
-                   T.dot(h_tm1, self.w_hc) + self.b_c))
+                                                    T.dot(h_tm1, self.w_hc) + self.b_c))
             o_t = T.nnet.sigmoid(T.dot(x_t, self.w_xo) +
                                  T.dot(h_tm1, self.w_ho) +
                                  T.dot(c_t, self.w_co) +

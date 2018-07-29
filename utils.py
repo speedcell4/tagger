@@ -1,9 +1,9 @@
 import os
 import re
 import codecs
+
 import numpy as np
 import theano
-
 
 models_path = "./models"
 eval_path = "./evaluation"
@@ -118,7 +118,7 @@ def iob_iobes(tags):
             new_tags.append(tag)
         elif tag.split('-')[0] == 'B':
             if i + 1 != len(tags) and \
-               tags[i + 1].split('-')[0] == 'I':
+                    tags[i + 1].split('-')[0] == 'I':
                 new_tags.append(tag)
             else:
                 new_tags.append(tag.replace('B-', 'S-'))
@@ -159,10 +159,11 @@ def iob_ranges(tags):
     IOB -> Ranges
     """
     ranges = []
+
     def check_if_closing_range():
-        if i == len(tags)-1 or tags[i+1].split('-')[0] == 'O':
+        if i == len(tags) - 1 or tags[i + 1].split('-')[0] == 'O':
             ranges.append((begin, i, type))
-    
+
     for i, tag in enumerate(tags):
         if tag.split('-')[0] == 'O':
             pass

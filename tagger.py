@@ -5,9 +5,11 @@ import time
 import codecs
 import optparse
 import json
+
 import numpy as np
+
 from loader import prepare_sentence
-from utils import create_input, iobes_iob, iob_ranges, zero_digits
+from utils import create_input, iob_ranges, iobes_iob, zero_digits
 from model import Model
 
 optparser = optparse.OptionParser()
@@ -84,9 +86,9 @@ with codecs.open(opts.input, 'r', 'utf-8') as f_input:
                 y_preds = iobes_iob(y_preds)
             # Write tags
             assert len(y_preds) == len(words)
-            
+
             if opts.outputFormat == 'json':
-                f_output.write(json.dumps({ "text": ' '.join(words), "ranges": iob_ranges(y_preds) }))
+                f_output.write(json.dumps({"text": ' '.join(words), "ranges": iob_ranges(y_preds)}))
             else:
                 f_output.write('%s\n' % ' '.join('%s%s%s' % (w, opts.delimiter, y)
                                                  for w, y in zip(words_ini, y_preds)))

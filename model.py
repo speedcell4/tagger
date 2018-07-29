@@ -1,14 +1,15 @@
 import os
 import re
+import codecs
+import cPickle
+
 import numpy as np
 import scipy.io
 import theano
 import theano.tensor as T
-import codecs
-import cPickle
 
-from utils import shared, set_values, get_name
-from nn import HiddenLayer, EmbeddingLayer, DropoutLayer, LSTM, forward
+from utils import get_name, set_values, shared
+from nn import DropoutLayer, EmbeddingLayer, HiddenLayer, LSTM, forward
 from optimization import Optimization
 
 
@@ -16,6 +17,7 @@ class Model(object):
     """
     Network architecture.
     """
+
     def __init__(self, parameters=None, models_path=None, model_path=None):
         """
         Initialize the model. We either provide the parameters and a path where
@@ -197,8 +199,8 @@ class Model(object):
                 print 'Loaded %i pretrained embeddings.' % len(pretrained)
                 print ('%i / %i (%.4f%%) words have been initialized with '
                        'pretrained embeddings.') % (
-                            c_found + c_lower + c_zeros, n_words,
-                            100. * (c_found + c_lower + c_zeros) / n_words
+                          c_found + c_lower + c_zeros, n_words,
+                          100. * (c_found + c_lower + c_zeros) / n_words
                       )
                 print ('%i found directly, %i after lowercasing, '
                        '%i after lowercasing + zero.') % (

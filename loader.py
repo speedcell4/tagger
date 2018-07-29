@@ -1,6 +1,7 @@
 import os
 import re
 import codecs
+
 from utils import create_dico, create_mapping, zero_digits
 from utils import iob2, iob_iobes
 
@@ -111,7 +112,9 @@ def prepare_sentence(str_words, word_to_id, char_to_id, lower=False):
     """
     Prepare a sentence for evaluation.
     """
+
     def f(x): return x.lower() if lower else x
+
     words = [word_to_id[f(w) if f(w) in word_to_id else '<UNK>']
              for w in str_words]
     chars = [[char_to_id[c] for c in w if c in char_to_id]
@@ -132,7 +135,9 @@ def prepare_dataset(sentences, word_to_id, char_to_id, tag_to_id, lower=False):
         - word char indexes
         - tag indexes
     """
+
     def f(x): return x.lower() if lower else x
+
     data = []
     for s in sentences:
         str_words = [w[0] for w in s]
